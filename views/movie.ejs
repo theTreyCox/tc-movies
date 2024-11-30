@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= movie.title %></title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <h1><%= movie.title %> (<%= movie.release_year %>)</h1>
+    <p><strong>Format:</strong> <%= movie.format %></p>
+    <p><strong>Label:</strong> <%= movie.label %></p>
+
+    <% if (details) { %>
+        <h2>IMDb Details</h2>
+        <p><strong>Plot:</strong> <%= details.Plot %></p>
+        <img src="<%= details.Poster %>" alt="<%= movie.title %> Poster">
+    <% } else { %>
+        <p>No additional details available.</p>
+    <% } %>
+    <a href="/">Back to Movies</a>
+</body>
+</html>

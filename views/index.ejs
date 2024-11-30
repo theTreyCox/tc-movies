@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TC Movies</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <h1>TC Movies</h1>
+    <form action="/add" method="POST">
+        <input type="text" name="title" placeholder="Title" required>
+        <select name="format">
+            <option value="4k">4K</option>
+            <option value="blu-ray">Blu-ray</option>
+            <option value="dvd">DVD</option>
+            <option value="vhs">VHS</option>
+            <option value="laserdisc">LaserDisc</option>
+            <option value="other">Other</option>
+        </select>
+        <input type="number" name="release_year" placeholder="Release Year" required>
+        <input type="text" name="label" placeholder="Label">
+        <input type="text" name="imdb_number" placeholder="IMDb Number" required>
+        <button type="submit">Add Movie</button>
+    </form>
+
+    <ul>
+        <% movies.forEach(movie => { %>
+            <li>
+                <a href="/movie/<%= movie.id %>"><%= movie.title %> (<%= movie.release_year %>)</a>
+            </li>
+        <% }) %>
+    </ul>
+</body>
+</html>

@@ -8,6 +8,10 @@
 </head>
 <body>
     <h1>TC Movies</h1>
+    <form action="/search" method="GET">
+        <input type="text" name="query" placeholder="Search for a movie..." required>
+        <button type="submit">Search</button>
+    </form>
     <form action="/add" method="POST">
         <input type="text" name="title" placeholder="Title" required>
         <select name="format">
@@ -20,7 +24,7 @@
         </select>
         <input type="number" name="release_year" placeholder="Release Year" required>
         <input type="text" name="label" placeholder="Label">
-        <input type="text" name="imdb_number" placeholder="IMDb Number" required>
+        <input type="text" name="imdb_number" placeholder="IMDb ID (e.g., tt1234567)" required>
         <button type="submit">Add Movie</button>
     </form>
 

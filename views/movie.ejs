@@ -12,8 +12,11 @@
     <p><strong>Label:</strong> <%= movie.label %></p>
 
     <% if (details) { %>
-        <h2>IMDb Details</h2>
+        <h2>Details from OMDb</h2>
         <p><strong>Plot:</strong> <%= details.Plot %></p>
+        <p><strong>Genre:</strong> <%= details.Genre %></p>
+        <p><strong>Director:</strong> <%= details.Director %></p>
+        <p><strong>Actors:</strong> <%= details.Actors %></p>
         <img src="<%= details.Poster %>" alt="<%= movie.title %> Poster">
     <% } else { %>
         <p>No additional details available.</p>

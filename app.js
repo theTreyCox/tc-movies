@@ -61,18 +61,35 @@ app.get('/movie/:id', (req, res) => {
         if (err) return res.status(500).send(err.message);
         if (!movie) return res.status(404).send('Movie not found');
 
-        // Fetch additional data from IMDb API
+        // Fetch movie details using OMDb API
         try {
-            const apiKey = 'your_imdb_api_key'; // Replace with actual API key
-            const response = await axios.get(
-                `https://www.omdbapi.com/?i=${movie.imdb_number}&apikey=${apiKey}`
-            );
+            const apiKey = '89ae9603';
+            const url = `https://www.omdbapi.com/?i=${movie.imdb_number}&apikey=${apiKey}`;
+            const response = await axios.get(url);
+
+            // Render the movie details page with OMDb data
             res.render('movie', { movie, details: response.data });
         } catch (error) {
             console.error(error);
             res.render('movie', { movie, details: null });
         }
     });
+});
+
+app.get('/search', async (req, res) => {
+    const { query } = req.query;
+
+    try {
+        const apiKey = '89ae9603';
+        const url = `https://www.omdbapi.com/?s=${encodeURIComponent(query)}&apikey=${apiKey}`;
+        const response = await axios.get(url);
+
+        // Pass search results to a new EJS view
+        res.render('search-results', { query, results: response.data.Search });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error fetching search results');
+    }
 });
 
 // Start server

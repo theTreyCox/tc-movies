@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Movie</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <h1>Edit Movie</h1>
+    <form action="/movie/<%= movie.id %>/edit" method="POST">
+        <input type="text" name="title" value="<%= movie.title %>" placeholder="Title" required>
+        <select name="format">
+            <option value="4k" <%= movie.format === '4k' ? 'selected' : '' %>>4K</option>
+            <option value="blu-ray" <%= movie.format === 'blu-ray' ? 'selected' : '' %>>Blu-ray</option>
+            <option value="dvd" <%= movie.format === 'dvd' ? 'selected' : '' %>>DVD</option>
+            <option value="vhs" <%= movie.format === 'vhs' ? 'selected' : '' %>>VHS</option>
+            <option value="laserdisc" <%= movie.format === 'laserdisc' ? 'selected' : '' %>>LaserDisc</option>
+            <option value="other" <%= movie.format === 'other' ? 'selected' : '' %>>Other</option>
+        </select>
+        <input type="number" name="release_year" value="<%= movie.release_year %>" placeholder="Release Year" required>
+        <input type="text" name="label" value="<%= movie.label %>" placeholder="Label">
+        <input type="text" name="imdb_number" value="<%= movie.imdb_number %>" placeholder="IMDb ID (e.g., tt1234567)" required>
+        <select name="packaging">
+            <option value="standard" <%= movie.packaging === 'standard' ? 'selected' : '' %>>Standard</option>
+            <option value="steelbook" <%= movie.packaging === 'steelbook' ? 'selected' : '' %>>SteelBook</option>
+            <option value="collector" <%= movie.packaging === 'collector' ? 'selected' : '' %>>Collector's Edition</option>
+            <option value="other" <%= movie.packaging === 'other' ? 'selected' : '' %>>Other</option>
+        </select>
+        <label>
+            <input type="checkbox" name="slipcover" <%= movie.slipcover ? 'checked' : '' %>> Includes Slipcase
+        </label>
+        <button type="submit">Save Changes</button>
+    </form>
+    <a href="/">Cancel</a>
+</body>
+</html>

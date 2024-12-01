@@ -11,15 +11,18 @@ const PORT = process.env.PORT || 3000;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
+
+// Static file serving for Bootstrap and Font Awesome
 app.use('/css', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css')));
 app.use('/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')));
+app.use('/fa', express.static(path.join(__dirname, 'node_modules/@fontawesome/fontawesome-free')));
 
 // Database setup
 const dbPath = process.env.DB_PATH || './data/database.db';
 const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
     if (err) {
         console.error('Failed to connect to the database:', err.message);
-        process.exit(1); // Exit the app
+        process.exit(1); // Exit the app if the database cannot be connected
     }
     console.log('Connected to the SQLite database.');
 });
@@ -37,14 +40,14 @@ db.serialize(() => {
         )
     `);
 
-    // Ensure the "packaging" column exists
+    // Add "packaging" column if it doesn't exist
     db.run(`ALTER TABLE movies ADD COLUMN packaging TEXT`, (err) => {
         if (err && !err.message.includes("duplicate column name")) {
             console.error("Error adding packaging column:", err.message);
         }
     });
 
-    // Ensure the "slipcover" column exists
+    // Add "slipcover" column if it doesn't exist
     db.run(`ALTER TABLE movies ADD COLUMN slipcover INTEGER DEFAULT 0`, (err) => {
         if (err && !err.message.includes("duplicate column name")) {
             console.error("Error adding slipcover column:", err.message);
@@ -53,6 +56,7 @@ db.serialize(() => {
 });
 
 // Routes
+// Home route to list all movies
 app.get('/', (req, res) => {
     db.all('SELECT * FROM movies', (err, rows) => {
         if (err) return res.status(500).send(err.message);
@@ -60,6 +64,7 @@ app.get('/', (req, res) => {
     });
 });
 
+// Add movie route
 app.post('/add', (req, res) => {
     const { title, format, release_year, label, imdb_number, packaging, slipcover } = req.body;
     const slipcoverValue = slipcover === 'on' ? 1 : 0; // Convert checkbox value to 0/1
@@ -73,6 +78,7 @@ app.post('/add', (req, res) => {
     );
 });
 
+// View individual movie route
 app.get('/movie/:id', (req, res) => {
     const { id } = req.params;
     db.get('SELECT * FROM movies WHERE id = ?', [id], async (err, movie) => {
@@ -93,11 +99,12 @@ app.get('/movie/:id', (req, res) => {
     });
 });
 
+// Search OMDb route
 app.get('/search', async (req, res) => {
     const { query } = req.query;
 
     try {
-        const apiKey = process.env.OMDB_API_KEY || '89ae9603'; // Use environment variable or fallback to hardcoded key
+        const apiKey = process.env.OMDB_API_KEY || '89ae9603';
         const url = `https://www.omdbapi.com/?s=${encodeURIComponent(query)}&apikey=${apiKey}`;
         const response = await axios.get(url);
 
@@ -112,6 +119,7 @@ app.get('/search', async (req, res) => {
     }
 });
 
+// Edit movie form route
 app.get('/movie/:id/edit', (req, res) => {
     const { id } = req.params;
     db.get('SELECT * FROM movies WHERE id = ?', [id], (err, movie) => {
@@ -121,10 +129,11 @@ app.get('/movie/:id/edit', (req, res) => {
     });
 });
 
+// Edit movie submission route
 app.post('/movie/:id/edit', (req, res) => {
     const { id } = req.params;
     const { title, format, release_year, label, imdb_number, packaging, slipcover } = req.body;
-    const slipcoverValue = slipcover === 'on' ? 1 : 0; // Convert checkbox value to 0/1
+    const slipcoverValue = slipcover === 'on' ? 1 : 0;
 
     db.run(
         `UPDATE movies SET title = ?, format = ?, release_year = ?, label = ?, imdb_number = ?, packaging = ?, slipcover = ? WHERE id = ?`,
@@ -136,6 +145,7 @@ app.post('/movie/:id/edit', (req, res) => {
     );
 });
 
+// Delete movie route
 app.post('/movie/:id/delete', (req, res) => {
     const { id } = req.params;
     db.run('DELETE FROM movies WHERE id = ?', [id], (err) => {

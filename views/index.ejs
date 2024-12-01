@@ -7,105 +7,169 @@
         <!-- Bootstrap CSS -->
         <link href="/css/bootstrap.min.css" rel="stylesheet">
         <!-- Font Awesome CSS -->
-        <link href="/fa/all.min.css" rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
         <!-- Custom Styles -->
         <link rel="stylesheet" href="/css/styles.css">
     </head>
-<body>
-    <main class="container mt-4">
-        <h1 class="text-center mb-4">TC Movies</h1>
-
-        <!-- OMDB Search Form -->
-        <form action="/search" method="GET" class="mb-4">
-            <div class="input-group">
-                <input type="text" name="query" class="form-control" placeholder="Search OMDb for a movie..." required>
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-search"></i> Search
-                </button>
-            </div>
-        </form>
-
-        <!-- Add Movie Section -->
-        <div class="mb-4">
-            <button class="btn btn-secondary w-100 text-start mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#addMovieForm" aria-expanded="true" aria-controls="addMovieForm">
-                <i class="fas fa-plus"></i> Add Movie
-            </button>
-            <div class="collapse" id="addMovieForm">
-                <form action="/add" method="POST" class="card p-3">
-                    <h2 class="h5 mb-3">Add a Movie</h2>
-                    <div class="mb-3">
-                        <label for="title" class="form-label">Title</label>
-                        <input type="text" name="title" id="title" class="form-control" placeholder="Title" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="format" class="form-label">Primary Format</label>
-                        <select name="format" id="format" class="form-select">
-                            <option value="4k">4K</option>
-                            <option value="Blu-ray">Blu-ray</option>
-                            <option value="DVD">DVD</option>
-                            <option value="VHS">VHS</option>
-                            <option value="LaserDisc">LaserDisc</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="release_year" class="form-label">Release Year</label>
-                        <input type="number" name="release_year" id="release_year" class="form-control" placeholder="Release Year">
-                    </div>
-                    <div class="mb-3">
-                        <label for="label" class="form-label">Label</label>
-                        <input type="text" name="label" id="label" class="form-control" placeholder="Label">
-                    </div>
-                    <div class="mb-3">
-                        <label for="imdb_number" class="form-label">IMDb ID</label>
-                        <input type="text" name="imdb_number" id="imdb_number" class="form-control" placeholder="IMDb ID (e.g., tt1234567)" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="packaging" class="form-label">Packaging</label>
-                        <select name="packaging" id="packaging" class="form-select" required>
-                            <option value="">Select Packaging</option>
-                            <option value="Standard">Standard</option>
-                            <option value="Steelbook">Steelbook</option>
-                            <option value="Hardbox">Hardbox</option>
-                            <option value="Mediabook">Mediabook</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
-                    <div class="form-check mb-3">
-                        <input type="checkbox" name="slipcover" id="slipcover" class="form-check-input">
-                        <label for="slipcover" class="form-check-label">Includes Slipcover</label>
-                    </div>
-                    <button type="submit" class="btn btn-success w-100">
-                        <i class="fas fa-plus"></i> Add Movie
+    <body>
+        <main class="container mt-4">
+            <h1 class="text-center mb-4">TC Movies</h1>
+    
+            <!-- OMDB Search Form -->
+            <form action="/search" method="GET" class="mb-4">
+                <div class="input-group">
+                    <input type="text" name="query" class="form-control" placeholder="Search OMDb for a movie..." required>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-search"></i> Search
                     </button>
-                </form>
+                </div>
+            </form>
+    
+            <!-- Add Movie Section -->
+            <div class="mb-4">
+                <button class="btn btn-secondary w-100 text-start mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#addMovieForm" aria-expanded="true" aria-controls="addMovieForm">
+                    <i class="fas fa-plus"></i> Add Movie
+                </button>
+                <div class="collapse" id="addMovieForm">
+                    <form action="/add" method="POST" class="card p-3">
+                        <h2 class="h5 mb-3">Add a Movie</h2>
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Title</label>
+                            <input type="text" name="title" id="title" class="form-control" placeholder="Title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="format" class="form-label">Primary Format</label>
+                            <select name="format" id="format" class="form-select">
+                                <option value="4k">4K</option>
+                                <option value="Blu-ray">Blu-ray</option>
+                                <option value="DVD">DVD</option>
+                                <option value="VHS">VHS</option>
+                                <option value="LaserDisc">LaserDisc</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="release_year" class="form-label">Release Year</label>
+                            <input type="number" name="release_year" id="release_year" class="form-control" placeholder="Release Year">
+                        </div>
+                        <div class="mb-3">
+                            <label for="label" class="form-label">Label</label>
+                            <input type="text" name="label" id="label" class="form-control" placeholder="Label">
+                        </div>
+                        <div class="mb-3">
+                            <label for="imdb_number" class="form-label">IMDb ID</label>
+                            <input type="text" name="imdb_number" id="imdb_number" class="form-control" placeholder="IMDb ID (e.g., tt1234567)" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="packaging" class="form-label">Packaging</label>
+                            <select name="packaging" id="packaging" class="form-select" required>
+                                <option value="">Select Packaging</option>
+                                <option value="Standard">Standard</option>
+                                <option value="Steelbook">Steelbook</option>
+                                <option value="Hardbox">Hardbox</option>
+                                <option value="Mediabook">Mediabook</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input type="checkbox" name="slipcover" id="slipcover" class="form-check-input">
+                            <label for="slipcover" class="form-check-label">Includes Slipcover</label>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">
+                            <i class="fas fa-plus"></i> Add Movie
+                        </button>
+                    </form>
+                </div>
             </div>
-        </div>
+    
+            <!-- Sort Options -->
+            <div class="mb-3">
+                <label for="sortBy" class="form-label">Sort By:</label>
+                <select id="sortBy" class="form-select" onchange="sortMovies()">
+                    <option value="title-asc">Name (A-Z)</option>
+                    <option value="title-desc">Name (Z-A)</option>
+                    <option value="release_year-desc">Release Year (Newest First)</option>
+                    <option value="release_year-asc">Release Year (Oldest First)</option>
+                    <option value="format-asc">Format</option>
+                    <option value="packaging-asc">Packaging</option>
+                </select>
+            </div>
+    
+            <!-- Movies List -->
+            <ul id="movieList" class="list-group">
+                <% movies.forEach(movie => { %>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <% if (movie.poster) { %>
+                                <!-- Display movie poster -->
+                                <img src="<%= movie.poster %>" alt="<%= movie.title %> Poster" class="img-thumbnail me-3" style="width: 50px; height: auto;">
+                            <% } else { %>
+                                <!-- Placeholder if no poster is available -->
+                                <div class="img-thumbnail bg-secondary text-white d-flex justify-content-center align-items-center me-3" style="width: 50px; height: 75px;">
+                                    <i class="fas fa-film"></i>
+                                </div>
+                            <% } %>
+                            <span class="movie-item">
+                                <a href="/movie/<%= movie.id %>" class="text-decoration-none text-white">
+                                    <strong class="movie-item-name"><%= movie.title %></strong> 
+                                    <small class="movie-item-type text-muted">(<%= movie.release_year %>) [<%= movie.format %> <%= movie.packaging %>]</small>
+                                </a>
+                            </span>
+                        </div>
+                        <div>
+                            <a class="btn btn-sm btn-warning me-2" href="/movie/<%= movie.id %>/edit">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <form action="/movie/<%= movie.id %>/delete" method="POST" class="d-inline">
+                                <button class="btn btn-sm btn-danger" type="submit" onclick="return confirm('Are you sure you want to delete this movie?')">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </li>
+                <% }) %>
+            </ul>
+        </main>
+    
+        <script src="/js/bootstrap.bundle.min.js"></script>
+        <script>
+            function sortMovies() {
+        const sortBy = document.getElementById('sortBy').value;
+        const movieList = document.getElementById('movieList');
+        const movies = Array.from(movieList.children);
 
-        <!-- Movies List -->
-        <ul class="list-group">
-            <% movies.forEach(movie => { %>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span class="movie-item">
-                        <a href="/movie/<%= movie.id %>" class="text-decoration-none text-white">
-                            <strong class="movie-item-name"><%= movie.title %></strong> <small class="movie-item-type text-muted">(<%= movie.release_year %>) [<%= movie.format %> <%= movie.packaging %>]</small>
-                        </a>
-                    </span>
-                    <div>
-                        <a class="btn btn-sm btn-warning me-2" href="/movie/<%= movie.id %>/edit">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                        <form action="/movie/<%= movie.id %>/delete" method="POST" class="d-inline">
-                            <button class="btn btn-sm btn-danger" type="submit" onclick="return confirm('Are you sure you want to delete this movie?')">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </form>
-                    </div>
-                </li>
-            <% }) %>
-        </ul>
-    </main>
-    <script src="/js/bootstrap.bundle.min.js"></script>
-</body>
+        // Function to remove "The" or "A" from the start of a title
+        const cleanTitle = (title) => title.replace(/^(The |A )/i, '').trim();
+
+        movies.sort((a, b) => {
+            const titleA = cleanTitle(a.querySelector('.movie-item-name').textContent.trim());
+            const titleB = cleanTitle(b.querySelector('.movie-item-name').textContent.trim());
+            const yearA = parseInt(a.querySelector('.movie-item-type').textContent.match(/\d+/));
+            const yearB = parseInt(b.querySelector('.movie-item-type').textContent.match(/\d+/));
+            const formatA = a.querySelector('.movie-item-type').textContent.match(/\[([^\]]+)\]/)[1].split(' ')[0];
+            const formatB = b.querySelector('.movie-item-type').textContent.match(/\[([^\]]+)\]/)[1].split(' ')[0];
+            const packagingA = a.querySelector('.movie-item-type').textContent.match(/\[([^\]]+)\]/)[1].split(' ')[1];
+            const packagingB = b.querySelector('.movie-item-type').textContent.match(/\[([^\]]+)\]/)[1].split(' ')[1];
+
+            switch (sortBy) {
+                case 'title-asc':
+                    return titleA.localeCompare(titleB);
+                case 'title-desc':
+                    return titleB.localeCompare(titleA);
+                case 'release_year-asc':
+                    return yearA - yearB;
+                case 'release_year-desc':
+                    return yearB - yearA;
+                case 'format-asc':
+                    return formatA.localeCompare(formatB);
+                case 'packaging-asc':
+                    return packagingA.localeCompare(packagingB);
+            }
+        });
+
+        movieList.innerHTML = '';
+        movies.forEach(movie => movieList.appendChild(movie));
+    }
+        </script>
+    </body>
 </html>

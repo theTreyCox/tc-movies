@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-    <header class="container my-4">
+    <header class="container my-4 position-relative">
         <div class="d-flex justify-content-between align-items-center">
             <!-- Back Button -->
             <a href="/" class="btn btn-secondary">
@@ -33,11 +33,14 @@
             </div>
         </div>
     </header>
-    <main class="container">
+    <main class="container position-relative">
         <!-- Local Item Details -->
         <div class="row mb-4">
             <div class="col-md-8">
                 <h1><%= movie.title %> (<%= movie.release_year %>)</h1>
+                <a id="trailerButton" href="#" target="_blank" class="btn btn-primary mt-3 d-none">
+                    <i class="fas fa-play"></i> Watch Trailer
+                </a>
                 <hr>
                 <h2>Details for Collection Item</h2>
                 <ul class="list-unstyled">
@@ -54,23 +57,88 @@
 
         <% if (details) { %>
             <!-- OMDb Details -->
-            <hr>
-            <div>
+            <div class="py-3">
+                <hr>
                 <h2>Details from OMDb</h2>
                 <ul class="list-unstyled">
                     <li><strong>Plot:</strong> <%= details.Plot %></li>
                     <li><strong>Genre:</strong> <%= details.Genre %></li>
                     <li><strong>Director:</strong> <%= details.Director %></li>
                     <li><strong>Actors:</strong> <%= details.Actors %></li>
+                    <li><strong>IMDb Page:</strong> 
+                        <a href="https://www.imdb.com/title/<%= movie.imdb_number %>" target="_blank" rel="noopener noreferrer">
+                            View on IMDb
+                        </a>
+                    </li>
                 </ul>
             </div>
-            <div class="bg-image-wrapper text-center mt-4 position-absolute">
-                <img class="bg-image" src="<%= details.Poster %>" alt="<%= movie.title %> Poster" class="img-fluid rounded">
-            </div>
-        <% } else { %>
-            <p class="text-muted">No additional details available.</p>
         <% } %>
+        <!-- TMDb Details -->
+        <div id="tmdbDetails" class="d-none py-3">
+            <hr>
+            <h2>Details from TMDb</h2>
+            <ul class="list-unstyled">
+                <li><strong>Overview:</strong> <span id="tmdbOverview"></span></li>
+                <li><strong>Release Date:</strong> <span id="tmdbReleaseDate"></span></li>
+                <li><strong>Rating:</strong> <span id="tmdbRating"></span>/10</li>
+                <li><strong>TMDb Page:</strong> 
+                    <a id="tmdbLink" href="#" target="_blank">View on TMDb</a>
+                </li>
+            </ul>
+        </div>
     </main>
+    <div class="bg-image-wrapper">
+        <img src="<%= details.Poster %>" alt="<%= movie.title %> Poster" class="bg-image img-fluid">
+    </div>
     <script src="/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const options = {
+            method: 'GET',
+            headers: {
+                accept: 'application/json',
+                Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxNGViYTk2MTA2NDJkMTAyMzIyNTE0YWVmNTExNmI0MCIsIm5iZiI6MTY4MDc1Mjk2Mi4xNzEsInN1YiI6IjY0MmU0MTQyMmRjNDRlMDA5YjExNTgwMyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.zTPE7wL9iENeP7Lngigd_CbxTr4-QRM6aoqS3gFwEkg'
+            }
+        };
+
+        async function fetchTMDbDetails() {
+            const imdbId = '<%= movie.imdb_number %>';
+            const tmdbUrl = `https://api.themoviedb.org/3/find/${imdbId}?external_source=imdb_id`;
+
+            try {
+                const res = await fetch(tmdbUrl, options);
+                const data = await res.json();
+
+                if (data.movie_results.length > 0) {
+                    const movie = data.movie_results[0];
+                    const movieId = movie.id;
+
+                    // Update TMDb Details
+                    document.getElementById('tmdbOverview').textContent = movie.overview;
+                    document.getElementById('tmdbReleaseDate').textContent = movie.release_date || 'N/A';
+                    document.getElementById('tmdbRating').textContent = movie.vote_average.toFixed(1) || 'N/A';
+                    document.getElementById('tmdbLink').href = `https://www.themoviedb.org/movie/${movieId}`;
+
+                    document.getElementById('tmdbDetails').classList.remove('d-none');
+
+                    // Fetch trailer if available
+                    const videoUrl = `https://api.themoviedb.org/3/movie/${movieId}/videos`;
+                    const videoRes = await fetch(videoUrl, options);
+                    const videoData = await videoRes.json();
+                    const trailer = videoData.results.find(video => video.type === 'Trailer' && video.site === 'YouTube');
+
+                    if (trailer) {
+                        const youtubeUrl = `https://www.youtube.com/watch?v=${trailer.key}`;
+                        const trailerButton = document.getElementById('trailerButton');
+                        trailerButton.href = youtubeUrl;
+                        trailerButton.classList.remove('d-none');
+                    }
+                }
+            } catch (error) {
+                console.error('Failed to fetch TMDb details:', error);
+            }
+        }
+
+        fetchTMDbDetails();
+    </script>
 </body>
 </html>

@@ -4,38 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Results for "<%= query %>"</title>
-    <style>
-        button.copy-btn {
-            margin-left: 10px;
-            cursor: pointer;
-            padding: 5px 10px;
-            border: none;
-            background-color: #007BFF;
-            color: white;
-            border-radius: 3px;
-        }
-
-        button.copy-btn:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    <!-- Bootstrap CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-    <h1>Search Results for "<%= query %>"</h1>
-    <% if (results && results.length) { %>
-        <ul>
-            <% results.forEach(movie => { %>
-                <li>
-                    <strong><%= movie.Title %></strong> (<%= movie.Year %>)<br>
-                    IMDb ID: <code id="imdb-<%= movie.imdbID %>"><%= movie.imdbID %></code>
-                    <button class="copy-btn" onclick="copyToClipboard('<%= movie.imdbID %>')">Copy</button>
-                </li>
-            <% }); %>
-        </ul>
-    <% } else { %>
-        <p>No results found.</p>
-    <% } %>
-    <a href="/">Back to Home</a>
+    <main class="container mt-4">
+        <h1 class="mb-4">Search Results for "<%= query %>"</h1>
+        <% if (results && results.length) { %>
+            <ul class="list-group">
+                <% results.forEach(movie => { %>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong><%= movie.Title %></strong> (<%= movie.Year %>)<br>
+                            IMDb ID: <code id="imdb-<%= movie.imdbID %>"><%= movie.imdbID %></code>
+                        </div>
+                        <button class="btn btn-primary btn-sm copy-btn" onclick="copyToClipboard('<%= movie.imdbID %>')">Copy</button>
+                    </li>
+                <% }); %>
+            </ul>
+        <% } else { %>
+            <p class="text-muted">No results found.</p>
+        <% } %>
+        <div class="mt-4">
+            <a href="/" class="btn btn-secondary">Back to Home</a>
+        </div>
+    </main>
 
     <script>
         function copyToClipboard(imdbID) {
@@ -48,5 +43,6 @@
             alert(`Copied IMDb ID: ${imdbID}`);
         }
     </script>
+    <script src="/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -12,11 +12,16 @@ const PORT = 3000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
+app.use('/css', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css')));
+app.use('/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')));
 
 // Database setup
-const db = new sqlite3.Database('./data/database.db', (err) => {
-    if (err) console.error(err.message);
-    console.log('Connected to the SQLite database.');
+const db = new sqlite3.Database('./data/database.db', sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
+    if (err) {
+        console.error(err.message);
+    } else {
+        console.log('Connected to the SQLite database.');
+    }
 });
 
 // Create or upgrade Movies Table

@@ -1,0 +1,17 @@
+// Bootstrap variable overrides
+$body-bg: #121212;
+$body-color: #ffffff;
+$link-color: #1e90ff;
+$link-hover-color: lighten($link-color, 10%);
+$btn-primary-bg: #1e90ff;
+$btn-primary-border-color: $btn-primary-bg;
+$btn-primary-color: #ffffff;
+
+// Navbar
+$navbar-dark-color: #ffffff;
+$navbar-dark-bg: #333333;
+
+// Cards
+$card-bg: #1c1c1c;
+$card-border-color: #444444;
+$card-color: #ffffff;

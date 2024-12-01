@@ -23,4 +23,6 @@
 	right: 0;
 	bottom: 0;
 	margin-top: 0 !important;
+    pointer-events: none;
+    z-index: -1;
 }

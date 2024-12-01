@@ -52,8 +52,8 @@
                     <li><strong>Actors:</strong> <%= details.Actors %></li>
                 </ul>
             </div>
-            <div class="text-center mt-4">
-                <img src="<%= details.Poster %>" alt="<%= movie.title %> Poster" class="img-fluid rounded">
+            <div class="bg-image-wrapper text-center mt-4 position-absolute">
+                <img class="bg-image" src="<%= details.Poster %>" alt="<%= movie.title %> Poster" class="img-fluid rounded">
             </div>
         <% } else { %>
             <p class="text-muted">No additional details available.</p>

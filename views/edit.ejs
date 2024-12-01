@@ -18,14 +18,14 @@
                 <input type="text" name="title" id="title" value="<%= movie.title %>" class="form-control" placeholder="Title" required>
             </div>
             <div class="mb-3">
-                <label for="format" class="form-label">Format</label>
+                <label for="format" class="form-label">Primary Format</label>
                 <select name="format" id="format" class="form-select">
                     <option value="4k" <%= movie.format === '4k' ? 'selected' : '' %>>4K</option>
-                    <option value="blu-ray" <%= movie.format === 'blu-ray' ? 'selected' : '' %>>Blu-ray</option>
-                    <option value="dvd" <%= movie.format === 'dvd' ? 'selected' : '' %>>DVD</option>
-                    <option value="vhs" <%= movie.format === 'vhs' ? 'selected' : '' %>>VHS</option>
-                    <option value="laserdisc" <%= movie.format === 'laserdisc' ? 'selected' : '' %>>LaserDisc</option>
-                    <option value="other" <%= movie.format === 'other' ? 'selected' : '' %>>Other</option>
+                    <option value="Blu-ray" <%= movie.format === 'Blu-ray' ? 'selected' : '' %>>Blu-ray</option>
+                    <option value="DVD" <%= movie.format === 'DVD' ? 'selected' : '' %>>DVD</option>
+                    <option value="VHS" <%= movie.format === 'VHS' ? 'selected' : '' %>>VHS</option>
+                    <option value="LaserDisc" <%= movie.format === 'LaserDisc' ? 'selected' : '' %>>LaserDisc</option>
+                    <option value="Other" <%= movie.format === 'Other' ? 'selected' : '' %>>Other</option>
                 </select>
             </div>
             <div class="mb-3">
@@ -43,15 +43,15 @@
             <div class="mb-3">
                 <label for="packaging" class="form-label">Packaging</label>
                 <select name="packaging" id="packaging" class="form-select">
-                    <option value="standard" <%= movie.packaging === 'standard' ? 'selected' : '' %>>Standard</option>
-                    <option value="steelbook" <%= movie.packaging === 'steelbook' ? 'selected' : '' %>>SteelBook</option>
-                    <option value="collector" <%= movie.packaging === 'collector' ? 'selected' : '' %>>Collector's Edition</option>
-                    <option value="other" <%= movie.packaging === 'other' ? 'selected' : '' %>>Other</option>
+                    <option value="Standard" <%= movie.packaging === 'Standard' ? 'selected' : '' %>>Standard</option>
+                    <option value="SteelBook" <%= movie.packaging === 'Steelbook' ? 'selected' : '' %>>SteelBook</option>
+                    <option value="Hard Box" <%= movie.packaging === 'Hard Box' ? 'selected' : '' %>>Hard Box</option>
+                    <option value="Other" <%= movie.packaging === 'Other' ? 'selected' : '' %>>Other</option>
                 </select>
             </div>
             <div class="form-check mb-3">
                 <input type="checkbox" name="slipcover" id="slipcover" class="form-check-input" <%= movie.slipcover ? 'checked' : '' %>>
-                <label for="slipcover" class="form-check-label">Includes Slipcase</label>
+                <label for="slipcover" class="form-check-label">Includes Slipcover</label>
             </div>
             <div class="d-flex justify-content-between">
                 <button type="submit" class="btn btn-success">Save Changes</button>

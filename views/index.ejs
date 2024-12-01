@@ -29,19 +29,19 @@
                 <input type="text" name="title" id="title" class="form-control" placeholder="Title" required>
             </div>
             <div class="mb-3">
-                <label for="format" class="form-label">Format</label>
+                <label for="format" class="form-label">Primary Format</label>
                 <select name="format" id="format" class="form-select">
                     <option value="4k">4K</option>
-                    <option value="blu-ray">Blu-ray</option>
-                    <option value="dvd">DVD</option>
-                    <option value="vhs">VHS</option>
-                    <option value="laserdisc">LaserDisc</option>
-                    <option value="other">Other</option>
+                    <option value="Blu-ray">Blu-ray</option>
+                    <option value="DVD">DVD</option>
+                    <option value="VHS">VHS</option>
+                    <option value="LaserDisc">LaserDisc</option>
+                    <option value="Other">Other</option>
                 </select>
             </div>
             <div class="mb-3">
                 <label for="release_year" class="form-label">Release Year</label>
-                <input type="number" name="release_year" id="release_year" class="form-control" placeholder="Release Year" required>
+                <input type="number" name="release_year" id="release_year" class="form-control" placeholder="Release Year">
             </div>
             <div class="mb-3">
                 <label for="label" class="form-label">Label</label>
@@ -55,15 +55,15 @@
                 <label for="packaging" class="form-label">Packaging</label>
                 <select name="packaging" id="packaging" class="form-select" required>
                     <option value="">Select Packaging</option>
-                    <option value="standard">Standard</option>
-                    <option value="steelbook">SteelBook</option>
-                    <option value="collector">Collector's Edition</option>
-                    <option value="other">Other</option>
+                    <option value="Standard">Standard</option>
+                    <option value="SteelBook">SteelBook</option>
+                    <option value="Hard Box">Hard Box</option>
+                    <option value="Other">Other</option>
                 </select>
             </div>
             <div class="form-check mb-3">
                 <input type="checkbox" name="slipcover" id="slipcover" class="form-check-input">
-                <label for="slipcover" class="form-check-label">Includes Slipcase</label>
+                <label for="slipcover" class="form-check-label">Includes Slipcover</label>
             </div>
             <button type="submit" class="btn btn-success">Add Movie</button>
         </form>
@@ -74,7 +74,7 @@
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     <span>
                         <a href="/movie/<%= movie.id %>" class="text-decoration-none">
-                            <%= movie.title %> (<%= movie.release_year %>)
+                            <%= movie.title %> (<%= movie.release_year %>) [<%= movie.format %> <%= movie.packaging %>]
                         </a>
                     </span>
                     <div>

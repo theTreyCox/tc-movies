@@ -11844,5 +11844,25 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+.bg-image {
+  width: calc(100vw - 4rem);
+  height: calc(100vh - 4rem);
+  object-fit: cover;
+  opacity: 0.2;
+  filter: blur(20px);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.bg-image-wrapper {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin-top: 0 !important;
+}
 
 /*# sourceMappingURL=styles.css.map */

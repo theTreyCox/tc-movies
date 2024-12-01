@@ -1,32 +1,31 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const sqlite3 = require('sqlite3').verbose();
 const axios = require('axios');
 const path = require('path');
 require('dotenv').config(); // To handle environment variables
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // Middleware
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 app.use('/css', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css')));
 app.use('/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')));
 
 // Database setup
-const db = new sqlite3.Database('./data/database.db', sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
+const dbPath = process.env.DB_PATH || './data/database.db';
+const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
     if (err) {
-        console.error(err.message);
-    } else {
-        console.log('Connected to the SQLite database.');
+        console.error('Failed to connect to the database:', err.message);
+        process.exit(1); // Exit the app
     }
+    console.log('Connected to the SQLite database.');
 });
 
 // Create or upgrade Movies Table
 db.serialize(() => {
-    // Create the table if it doesn't exist
     db.run(`
         CREATE TABLE IF NOT EXISTS movies (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -42,8 +41,6 @@ db.serialize(() => {
     db.run(`ALTER TABLE movies ADD COLUMN packaging TEXT`, (err) => {
         if (err && !err.message.includes("duplicate column name")) {
             console.error("Error adding packaging column:", err.message);
-        } else {
-            console.log("Packaging column added or already exists.");
         }
     });
 
@@ -51,8 +48,6 @@ db.serialize(() => {
     db.run(`ALTER TABLE movies ADD COLUMN slipcover INTEGER DEFAULT 0`, (err) => {
         if (err && !err.message.includes("duplicate column name")) {
             console.error("Error adding slipcover column:", err.message);
-        } else {
-            console.log("Slipcover column added or already exists.");
         }
     });
 });
@@ -117,7 +112,6 @@ app.get('/search', async (req, res) => {
     }
 });
 
-// Edit movie form
 app.get('/movie/:id/edit', (req, res) => {
     const { id } = req.params;
     db.get('SELECT * FROM movies WHERE id = ?', [id], (err, movie) => {
@@ -127,7 +121,6 @@ app.get('/movie/:id/edit', (req, res) => {
     });
 });
 
-// Handle edit form submission
 app.post('/movie/:id/edit', (req, res) => {
     const { id } = req.params;
     const { title, format, release_year, label, imdb_number, packaging, slipcover } = req.body;
@@ -143,7 +136,6 @@ app.post('/movie/:id/edit', (req, res) => {
     );
 });
 
-// Delete movie
 app.post('/movie/:id/delete', (req, res) => {
     const { id } = req.params;
     db.run('DELETE FROM movies WHERE id = ?', [id], (err) => {

@@ -86,12 +86,14 @@
             <div class="mb-3">
                 <label for="sortBy" class="form-label">Sort By:</label>
                 <select id="sortBy" class="form-select" onchange="sortMovies()">
-                    <option value="title-asc">Name (A-Z)</option>
+                    <option value="title-asc" selected>Name (A-Z)</option>
                     <option value="title-desc">Name (Z-A)</option>
                     <option value="release_year-desc">Release Year (Newest First)</option>
                     <option value="release_year-asc">Release Year (Oldest First)</option>
                     <option value="format-asc">Format</option>
                     <option value="packaging-asc">Packaging</option>
+                    <option value="label-asc">Label (A-Z)</option>
+                    <option value="label-desc">Label (Z-A)</option>
                 </select>
             </div>
     
@@ -113,7 +115,14 @@
                                 <a href="/movie/<%= movie.id %>" class="text-decoration-none text-white">
                                     <strong class="movie-item-name"><%= movie.title %></strong> 
                                     <br>
-                                    <small class="movie-item-type text-muted">(<%= movie.release_year %>) [<%= movie.format %> <%= movie.packaging %>]</small>
+                                    <small class="movie-item-type text-muted">
+                                        (<%= movie.release_year %>) [<%= movie.format %> <%= movie.packaging %>] 
+                                        <% if (movie.label && movie.label.trim()) { %>
+                                            [<%= movie.label %>]
+                                        <% } else { %>
+                                            [No Label]
+                                        <% } %>
+                                    </small>
                                 </a>
                             </span>
                         </div>
@@ -135,42 +144,61 @@
         <script src="/js/bootstrap.bundle.min.js"></script>
         <script>
             function sortMovies() {
-        const sortBy = document.getElementById('sortBy').value;
-        const movieList = document.getElementById('movieList');
-        const movies = Array.from(movieList.children);
+    const sortBy = document.getElementById('sortBy').value;
+    const movieList = document.getElementById('movieList');
+    const movies = Array.from(movieList.children);
 
-        // Function to remove "The" or "A" from the start of a title
-        const cleanTitle = (title) => title.replace(/^(The |A )/i, '').trim();
+    // Helper function to clean title
+    const cleanTitle = (title) => title.replace(/^(The |A )/i, '').trim();
 
-        movies.sort((a, b) => {
-            const titleA = cleanTitle(a.querySelector('.movie-item-name').textContent.trim());
-            const titleB = cleanTitle(b.querySelector('.movie-item-name').textContent.trim());
-            const yearA = parseInt(a.querySelector('.movie-item-type').textContent.match(/\d+/));
-            const yearB = parseInt(b.querySelector('.movie-item-type').textContent.match(/\d+/));
-            const formatA = a.querySelector('.movie-item-type').textContent.match(/\[([^\]]+)\]/)[1].split(' ')[0];
-            const formatB = b.querySelector('.movie-item-type').textContent.match(/\[([^\]]+)\]/)[1].split(' ')[0];
-            const packagingA = a.querySelector('.movie-item-type').textContent.match(/\[([^\]]+)\]/)[1].split(' ')[1];
-            const packagingB = b.querySelector('.movie-item-type').textContent.match(/\[([^\]]+)\]/)[1].split(' ')[1];
+    // Extract the last value in square brackets (assumed to be the label)
+    const extractLabel = (element) => {
+      const text = element.querySelector('.movie-item-type').textContent;
+      const matches = text.match(/\[(.*?)\]/g); // Match all square-bracketed items
+      return matches ? matches[matches.length - 1].replace(/[\[\]]/g, '').trim() : 'No Label';
+    };
 
-            switch (sortBy) {
-                case 'title-asc':
-                    return titleA.localeCompare(titleB);
-                case 'title-desc':
-                    return titleB.localeCompare(titleA);
-                case 'release_year-asc':
-                    return yearA - yearB;
-                case 'release_year-desc':
-                    return yearB - yearA;
-                case 'format-asc':
-                    return formatA.localeCompare(formatB);
-                case 'packaging-asc':
-                    return packagingA.localeCompare(packagingB);
-            }
-        });
+    movies.sort((a, b) => {
+    const titleA = cleanTitle(a.querySelector('.movie-item-name').textContent.trim());
+    const titleB = cleanTitle(b.querySelector('.movie-item-name').textContent.trim());
+    const yearA = parseInt(a.querySelector('.movie-item-type').textContent.match(/\d+/));
+    const yearB = parseInt(b.querySelector('.movie-item-type').textContent.match(/\d+/));
 
-        movieList.innerHTML = '';
-        movies.forEach(movie => movieList.appendChild(movie));
+    const labelA = extractLabel(a);
+    const labelB = extractLabel(b);
+
+    const formatA = a.querySelector('.movie-item-type').textContent.match(/\[([^\]]+)\]/)[1].split(' ')[0];
+    const formatB = b.querySelector('.movie-item-type').textContent.match(/\[([^\]]+)\]/)[1].split(' ')[0];
+    const packagingA = a.querySelector('.movie-item-type').textContent.match(/\[([^\]]+)\]/)[1].split(' ')[1];
+    const packagingB = b.querySelector('.movie-item-type').textContent.match(/\[([^\]]+)\]/)[1].split(' ')[1];
+
+    switch (sortBy) {
+        case 'title-asc':
+            return titleA.localeCompare(titleB);
+        case 'title-desc':
+            return titleB.localeCompare(titleA);
+        case 'release_year-asc':
+            return yearA - yearB;
+        case 'release_year-desc':
+            return yearB - yearA;
+        case 'label-asc':
+            return labelA.localeCompare(labelB);
+        case 'label-desc':
+            return labelB.localeCompare(labelA);
+        case 'format-asc':
+            return formatA.localeCompare(formatB);
+        case 'packaging-asc':
+            return packagingA.localeCompare(packagingB);
     }
+});
+
+    // Clear and re-append sorted movies
+    movieList.innerHTML = '';
+    movies.forEach(movie => movieList.appendChild(movie));
+}
+
+// Default sorting by Name (A-Z) on page load
+document.addEventListener('DOMContentLoaded', sortMovies);
         </script>
     </body>
 </html>
